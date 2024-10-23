@@ -543,11 +543,17 @@ processors:
     - gcp
   transform/dcgm_5:
     metric_statements:
-      context: datapoint
+    - context: datapoint
       statements:
       - set(attributes["model"], resource.attributes["gpu.model"])
       - set(attributes["gpu_number"], resource.attributes["gpu.number"])
       - set(attributes["uuid"], resource.attributes["gpu.uuid"])
+  transform/otel_1:
+    error_mode: ignore
+    metric_statements:
+    - context: metric
+      statements:
+      - extract_count_metric(true) where name == "grpc_client_attempt_duration"
 receivers:
   dcgm/dcgm:
     collection_interval: 60s

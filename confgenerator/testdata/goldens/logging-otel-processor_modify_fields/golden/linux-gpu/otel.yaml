@@ -469,7 +469,7 @@ processors:
   transform/logs_p1_sample__logs_0:
     error_mode: ignore
     log_statements:
-      context: log
+    - context: log
       statements:
       - delete_key(cache, "__field_0") where (cache != nil and cache["__field_0"] != nil)
       - set(cache["__field_0"], body["source"]) where (body != nil and body["source"] != nil)
@@ -555,10 +555,16 @@ processors:
       - set(cache["__setif_value"], cache["value"])
       - replace_pattern(cache["__setif_value"], "^projects/([^/]*)/traces/", "")
       - set(trace_id.string, cache["__setif_value"]) where (cache != nil and cache["value"] != nil)
+  transform/otel_1:
+    error_mode: ignore
+    metric_statements:
+    - context: metric
+      statements:
+      - extract_count_metric(true) where name == "grpc_client_attempt_duration"
   transform/sample__logs_0:
     error_mode: ignore
     log_statements:
-      context: log
+    - context: log
       statements:
       - delete_key(cache, "__field_0") where (cache != nil and cache["__field_0"] != nil)
       - set(cache["__field_0"], attributes["compute.googleapis.com/resource_name"]) where (attributes != nil and attributes["compute.googleapis.com/resource_name"] != nil)
@@ -575,7 +581,7 @@ processors:
   transform/syslog_0:
     error_mode: ignore
     log_statements:
-      context: log
+    - context: log
       statements:
       - delete_key(cache, "__field_0") where (cache != nil and cache["__field_0"] != nil)
       - set(cache["__field_0"], attributes["compute.googleapis.com/resource_name"]) where (attributes != nil and attributes["compute.googleapis.com/resource_name"] != nil)

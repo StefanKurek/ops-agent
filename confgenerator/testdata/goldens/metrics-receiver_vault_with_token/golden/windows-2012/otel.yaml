@@ -563,9 +563,15 @@ processors:
   resourcedetection/_global_0:
     detectors:
     - gcp
+  transform/otel_1:
+    error_mode: ignore
+    metric_statements:
+    - context: metric
+      statements:
+      - extract_count_metric(true) where name == "grpc_client_attempt_duration"
   transform/vault_0:
     metric_statements:
-      context: datapoint
+    - context: datapoint
       statements:
       - convert_summary_count_val_to_sum("cumulative",  true) where metric.name == "vault_azure_delete"
       - convert_summary_sum_val_to_sum("cumulative",  true) where metric.name == "vault_azure_delete"

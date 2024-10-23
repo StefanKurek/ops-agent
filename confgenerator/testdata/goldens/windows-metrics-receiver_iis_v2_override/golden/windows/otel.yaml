@@ -494,15 +494,21 @@ processors:
     - gcp
   transform/iis_0:
     metric_statements:
-      context: datapoint
+    - context: datapoint
       statements:
       - set(attributes["site"], resource.attributes["iis.site"])
       - set(attributes["app_pool"], resource.attributes["iis.application_pool"])
   transform/iis_1:
     metric_statements:
-      context: datapoint
+    - context: datapoint
       statements:
       - keep_keys(resource.attributes, [])
+  transform/otel_1:
+    error_mode: ignore
+    metric_statements:
+    - context: metric
+      statements:
+      - extract_count_metric(true) where name == "grpc_client_attempt_duration"
 receivers:
   hostmetrics/hostmetrics:
     collection_interval: 60s

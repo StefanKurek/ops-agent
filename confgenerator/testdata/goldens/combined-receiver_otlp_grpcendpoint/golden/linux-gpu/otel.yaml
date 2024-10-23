@@ -483,6 +483,12 @@ processors:
     detectors:
     - gcp
     override: false
+  transform/otel_1:
+    error_mode: ignore
+    metric_statements:
+    - context: metric
+      statements:
+      - extract_count_metric(true) where name == "grpc_client_attempt_duration"
   transform/otlp_1:
     error_mode: ignore
     metric_statements:

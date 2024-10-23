@@ -502,7 +502,7 @@ processors:
     - gcp
   transform/flink_2:
     metric_statements:
-      context: datapoint
+    - context: datapoint
       statements:
       - set(attributes["host_name"], resource.attributes["host.name"])
       - set(attributes["taskmanager_id"], resource.attributes["flink.taskmanager.id"])
@@ -510,6 +510,12 @@ processors:
       - set(attributes["task_name"], resource.attributes["flink.task.name"])
       - set(attributes["subtask_index"], resource.attributes["flink.subtask.index"])
       - set(attributes["resource_type"], resource.attributes["flink.resource.type"])
+  transform/otel_1:
+    error_mode: ignore
+    metric_statements:
+    - context: metric
+      statements:
+      - extract_count_metric(true) where name == "grpc_client_attempt_duration"
 receivers:
   flinkmetrics/flink:
     collection_interval: 60s
