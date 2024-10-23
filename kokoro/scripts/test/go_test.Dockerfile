@@ -1,6 +1,6 @@
 # To edit this file, follow these instructions: go/sdi-integ-test#updating-the-test-runner-container.
 
-FROM golang:1.22-bullseye
+FROM golang:1.22.8-bullseye
 
 RUN curl -sSL https://sdk.cloud.google.com | bash
 
